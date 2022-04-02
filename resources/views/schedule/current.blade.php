@@ -193,7 +193,7 @@
 </div>
 @endsection
 @section('js')
-<script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
 <script>
     function capture() {
         const captureElement = document.querySelector('.grafik')
