@@ -6,6 +6,7 @@ try {
     window.axios = require('axios');
     window.$ = require('jquery');
     window.XLSX = require("xlsx");
+    window.html2canvas = require("html2canvas");
 } catch (e) {}
 
 /**
