@@ -8,7 +8,6 @@ try {
     window.XLSX = require("xlsx");
     window.html2canvas = require("html2canvas");
     window.trix = require("trix");
-    window.Vue = require("vue");
 } catch (e) {}
 
 /**

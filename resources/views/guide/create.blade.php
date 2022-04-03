@@ -1,6 +1,12 @@
 @extends('layouts.main')
 @section('head')
     <link rel="stylesheet" type="text/css" href="{{ asset('css/trix.css') }}">
+    <style>
+    .trix-content img {
+        width: 300px;
+        height: 300px;
+    }
+    </style>
 @endsection
 @section('content')
 <div class="container">

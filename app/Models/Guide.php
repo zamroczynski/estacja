@@ -11,6 +11,7 @@ class Guide extends Model
 
     protected $fillable = [
         'name',
+        'text',
         'is_public',
     ];
 }

@@ -55,6 +55,12 @@ Route::group(['middleware' => 'auth'], function () {
 
         });
 
+        //Podręcznik user
+        Route::group(['prefix' => 'guide'], function () {
+            Route::get('/', [guideController::class, 'indexUser'])->name('guideList');
+            Route::get('/show/{id}', [GuideController::class, 'show'])->name('guideShow');
+        });
+
 
         //Grafik user
         Route::prefix('schedule')->group(function () {
@@ -101,6 +107,10 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/create', [GuideController::class, 'create'])->name('adminGuideCreate');
                 Route::post('/store', [GuideController::class, 'store'])->name('adminGuideStore');
                 Route::post('/upload', [GuideController::class, 'upload'])->name('adminGuideUpload');
+                Route::get('/edit/{id}', [GuideController::class, 'edit'])->name('adminGuideEdit');
+                Route::post('/public', [GuideController::class, 'public'])->name('adminGuidePublic');
+                Route::post('/unpublic', [GuideController::class, 'unpublic'])->name('adminGuideUnPublic');
+                Route::post('/update', [GuideController::class, 'update'])->name('adminGuideUpdate');
             });
 
             Route::group(['prefix' => 'schedule'], function () {

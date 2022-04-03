@@ -9,7 +9,7 @@ use App\Models\Shift;
 use App\Models\Shift_In_Schedule;
 use App\Models\User;
 use App\Models\User_In_Schedule;
-use App\Notifications\ScheduleNotification;
+use App\Notifications\DbNotification;
 use Carbon\Carbon;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
@@ -145,7 +145,7 @@ class ScheduleController extends Controller
                         $rowAdded++;
                         if ($schedule->is_public == true && $notify == true) {
                             $message = 'Została przypisana do Ciebie zmiana w grafiku '.$schedule->name.' dotyczy zmiany '.$shift->shift->name.' dnia '.$date;
-                            Notification::send(User::find($userInSchedules), new ScheduleNotification($message, ModuleName::SCHEDULE));
+                            Notification::send(User::find($userInSchedules), new DbNotification($message, ModuleName::SCHEDULE));
                         }
                     }
                 }
@@ -261,7 +261,7 @@ class ScheduleController extends Controller
     {
         $schedule = $this->isPublic($id, true);
         $message = 'Nowy grafik o nazwie: "'.$schedule->name.'" został opublikowany!';
-        Notification::send(User::all(), new ScheduleNotification($message, ModuleName::SCHEDULE));
+        Notification::send(User::all(), new DbNotification($message, ModuleName::SCHEDULE));
         return redirect()->route('scheduleManage')->with('status', 'Grafik został opublikowany i powiadomienie do pracowników zostało wysłane!');
     }
 
