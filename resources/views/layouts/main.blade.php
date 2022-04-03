@@ -13,6 +13,7 @@
         <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
         <!-- JS -->
         <script src="{{ asset('js/app.js') }}"></script>
+        @yield('head')
     </head>
     <body id="page-top" class="bg-light d-flex flex-column min-vh-100">
         <!-- Navigation-->

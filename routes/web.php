@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PreferenceController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ShiftController;
+use App\Http\Controllers\GuideController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
@@ -95,7 +96,11 @@ Route::group(['middleware' => 'auth'], function () {
             });
 
             Route::group(['prefix' => 'guide'], function () {
-                Route::get('/', [GuideController::class, 'index'])->name('adminGuide');
+                Route::get('/', function () {return view('guide.admin');})->name('adminGuide');
+                Route::get('/list', [GuideController::class, 'index'])->name('adminGuideList');
+                Route::get('/create', [GuideController::class, 'create'])->name('adminGuideCreate');
+                Route::post('/store', [GuideController::class, 'store'])->name('adminGuideStore');
+                Route::post('/upload', [GuideController::class, 'upload'])->name('adminGuideUpload');
             });
 
             Route::group(['prefix' => 'schedule'], function () {

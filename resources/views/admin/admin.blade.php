@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    <div class="row mt-5"><h1 class="text-center">Administracja</h1></div>
     <div class="row">
         <div class="col">
             <div class="card-group">

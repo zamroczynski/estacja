@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guide;
 use Illuminate\Http\Request;
 
 class GuideController extends Controller
@@ -23,7 +24,7 @@ class GuideController extends Controller
      */
     public function create()
     {
-        //
+        return view('guide.create');
     }
 
     /**
@@ -34,7 +35,27 @@ class GuideController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $guide = Guide::create([
+            'body' => $request->content,
+            'name' => $request->name,
+            'is_public' => FALSE
+        ]);
+
+        return view('guide.admin');
+    }
+
+    public function upload(Request $request)
+    {
+        if ($request->hasFile('file')) {
+            $filenamewithextension = $request->file('file')->getClientOriginalName();
+            $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+            $extension = $request->file('file')->getClientOriginalExtension();
+            $filenametostore = $filename.'_'.time().'.'.$extension;
+            $request->file('file')->storeAs('public/uploads', $filenametostore);
+            $path = asset('storage/uploads/'.$filenametostore);
+            echo $path;
+            exit;
+        }
     }
 
     /**

@@ -19,3 +19,4 @@ mix.js('resources/js/app.js', 'public/js')
         'public/webfonts'
     )
     .sourceMaps();
+mix.postCss('resources/css/trix.css', 'public/css');
