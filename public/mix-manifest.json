@@ -1,6 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/css/trix.css": "/css/trix.css",
     "/webfonts/fa-brands-400.ttf": "/webfonts/fa-brands-400.ttf",
     "/webfonts/fa-brands-400.woff2": "/webfonts/fa-brands-400.woff2",
     "/webfonts/fa-regular-400.ttf": "/webfonts/fa-regular-400.ttf",

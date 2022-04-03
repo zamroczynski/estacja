@@ -2,7 +2,12 @@
 
 @section('content')
 <div class="container">
-    <div class="row mt-5"><h1 class="text-center">Grafik</h1></div>
+    <div class="row mt-5 position-relative">
+        <div class="col"><h1 class="position-absolute top-0 start-50 translate-middle">Podręcznik</h1></div>
+        <div class="col">
+            <a class="btn btn-secondary btn-lg" style="float: right; margin-left: 0.25rem" href="{{ route('adminPanel') }}" role="button">Powrót</a>
+        </div>
+    </div>
     <div class="row">
         <div class="col">
             <div class="card-group">

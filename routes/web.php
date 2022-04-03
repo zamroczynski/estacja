@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PreferenceController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ShiftController;
+use App\Http\Controllers\GuideController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
@@ -54,6 +55,12 @@ Route::group(['middleware' => 'auth'], function () {
 
         });
 
+        //Podręcznik user
+        Route::group(['prefix' => 'guide'], function () {
+            Route::get('/', [guideController::class, 'indexUser'])->name('guideList');
+            Route::get('/show/{id}', [GuideController::class, 'show'])->name('guideShow');
+        });
+
 
         //Grafik user
         Route::prefix('schedule')->group(function () {
@@ -95,7 +102,15 @@ Route::group(['middleware' => 'auth'], function () {
             });
 
             Route::group(['prefix' => 'guide'], function () {
-                Route::get('/', [GuideController::class, 'index'])->name('adminGuide');
+                Route::get('/', function () {return view('guide.admin');})->name('adminGuide');
+                Route::get('/list', [GuideController::class, 'index'])->name('adminGuideList');
+                Route::get('/create', [GuideController::class, 'create'])->name('adminGuideCreate');
+                Route::post('/store', [GuideController::class, 'store'])->name('adminGuideStore');
+                Route::post('/upload', [GuideController::class, 'upload'])->name('adminGuideUpload');
+                Route::get('/edit/{id}', [GuideController::class, 'edit'])->name('adminGuideEdit');
+                Route::post('/public', [GuideController::class, 'public'])->name('adminGuidePublic');
+                Route::post('/unpublic', [GuideController::class, 'unpublic'])->name('adminGuideUnPublic');
+                Route::post('/update', [GuideController::class, 'update'])->name('adminGuideUpdate');
             });
 
             Route::group(['prefix' => 'schedule'], function () {

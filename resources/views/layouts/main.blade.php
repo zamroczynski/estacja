@@ -13,6 +13,7 @@
         <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
         <!-- JS -->
         <script src="{{ asset('js/app.js') }}"></script>
+        @yield('head')
     </head>
     <body id="page-top" class="bg-light d-flex flex-column min-vh-100">
         <!-- Navigation-->
@@ -49,7 +50,7 @@
                                 <a href="{{ route('edsPanel') }}" class="nav-link py-3 px-0 px-lg-3 rounded">Terminy</a>
                             </li>
                             <li class="nav-item mx-0 mx-lg-1">
-                                <a href="#" class="nav-link py-3 px-0 px-lg-3 rounded">Podręcznik</a>
+                                <a href="{{ route('guideList') }}" class="nav-link py-3 px-0 px-lg-3 rounded">Podręcznik</a>
                             </li>
                             <li class="nav-item mx-0 mx-lg-1">
                                 <a href="#" class="nav-link py-3 px-0 px-lg-3 rounded">Planogramy</a>

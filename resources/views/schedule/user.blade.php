@@ -22,7 +22,7 @@
       </div>
     @endif
     </div>
-    <div class="row mt-5"><h1 class="text-center">Grafik</h1></div>
+    <div class="row mt-1"><h1 class="text-center">Grafik</h1></div>
     <div class="row">
         <div class="col">
             <div class="card-group">
