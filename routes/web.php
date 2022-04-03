@@ -7,6 +7,7 @@ use App\Http\Controllers\PreferenceController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\GuideController;
+use App\Http\Controllers\PlanogramController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
@@ -57,9 +58,15 @@ Route::group(['middleware' => 'auth'], function () {
 
         //Podręcznik user
         Route::group(['prefix' => 'guide'], function () {
-            Route::get('/', [guideController::class, 'indexUser'])->name('guideList');
+            Route::get('/', [GuideController::class, 'indexUser'])->name('guideList');
             Route::get('/show/{id}', [GuideController::class, 'show'])->name('guideShow');
         });
+
+
+        //Podręcznik user
+        // Route::group(['prefix' => 'planograms'], function () {
+        //     Route::get('/', [guideController::class, 'indexUser'])->name('');
+        // });
 
 
         //Grafik user
@@ -98,7 +105,7 @@ Route::group(['middleware' => 'auth'], function () {
             });
 
             Route::group(['prefix' => 'planograms'], function () {
-                Route::get('/', [UserController::class, 'index'])->name('adminPlanograms');
+                Route::get('/', [PlanogramController::class, 'list'])->name('adminPlanogram');
             });
 
             Route::group(['prefix' => 'guide'], function () {
