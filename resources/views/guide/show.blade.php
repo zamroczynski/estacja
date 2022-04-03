@@ -11,7 +11,7 @@
                     href="{{ route('guideList') }}" role="button">Powrót</a>
             </div>
         </div>
-        <div class="row">
+        <div class="row mb-3">
             <div class="col">
                 <h3 class="text-center">{{ $guide->name }}</h3>
                 <div id="content"></div>

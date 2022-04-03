@@ -102,6 +102,10 @@ class GuideController extends Controller
         $guide->name = $request->name;
         $guide->text = $request->content;
         $guide->save();
+        if ($guide->is_public) {
+            $message = 'Instrukcja: "'.$guide->name.'" została zaktualizowana! Sprawdź ją w podręczniku stacji!';
+            Notification::send(User::all(), new DbNotification($message, ModuleName::GUIDE));
+        }
         return redirect()->route('adminGuideList')->with('status', 'Instrukcja została zapisana!');
     }
 
