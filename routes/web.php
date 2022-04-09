@@ -123,14 +123,6 @@ Route::group(['middleware' => 'auth'], function () {
             Route::group(['prefix' => 'schedule'], function () {
                 Route::get('/', function () {return view('schedule.admin');})->name('adminSchedule');
                 Route::get('/preferences', [PreferenceController::class, 'indexAdmin'])->name('adminPreferences');
-
-                Route::group(['prefix' => 'shift'], function () {
-                    Route::get('/', [ShiftController::class, 'index'])->name('shiftList');
-                    Route::post('/add', [ShiftController::class, 'store'])->name('shiftAdd');
-                    Route::get('/edit/{id}', [ShiftController::class, 'edit'])->name('shiftEdit');
-                    Route::post('/edit/{id}', [ShiftController::class, 'update'])->name('shiftUpdate');
-                });
-
                 Route::get('/create', [ScheduleController::class, 'create'])->name('scheduleCreate');
                 Route::post('/create', [ScheduleController::class, 'save'])->name('scheduleSave');
                 Route::get('/list', [ScheduleController::class, 'indexAdmin'])->name('scheduleManage');
@@ -139,6 +131,12 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/edit/{id}', [ScheduleController::class, 'edit'])->name('scheduleEdit');
                 Route::post('/edit', [ScheduleController::class, 'store'])->name('scheduleStore');
 
+                Route::group(['prefix' => 'shift'], function () {
+                    Route::get('/', [ShiftController::class, 'index'])->name('shiftList');
+                    Route::post('/add', [ShiftController::class, 'store'])->name('shiftAdd');
+                    Route::get('/edit/{id}', [ShiftController::class, 'edit'])->name('shiftEdit');
+                    Route::post('/edit/{id}', [ShiftController::class, 'update'])->name('shiftUpdate');
+                });
             });
         });
     });

@@ -38,6 +38,10 @@ class ShiftController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'name' => ['required', 'max:100', 'unique:shifts,name'],
+            'duration' => ['required', 'gt:0'],
+        ]);
         $shift = new Shift();
         $shift->name = $request->name;
         $shift->start = $request->start;
@@ -81,6 +85,10 @@ class ShiftController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validated = $request->validate([
+            'name' => ['required', 'max:100'],
+            'duration' => ['required', 'gt:0'],
+        ]);
         $shift = Shift::find($id);
         $shift->name = $request->name;
         $shift->start = $request->start;

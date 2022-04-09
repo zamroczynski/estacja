@@ -100,6 +100,9 @@ class ScheduleController extends Controller
 
     public function save(Request $request)
     {
+        $validated = $request->validate([
+            'name' => ['max:100'],
+        ]);
         if($request->has('shift')) {
             $date = $request->year."-".$request->month;
             $schedule = new Schedule();
@@ -121,6 +124,9 @@ class ScheduleController extends Controller
 
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'name' => ['max:100'],
+        ]);
         $scheduleId = $request->schedule;
         $daysInMonth = $request->daysInMonth;
         $month = $request->month;

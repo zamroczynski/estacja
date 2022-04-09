@@ -51,6 +51,11 @@ class ExpiryDatesController extends Controller
     {
         $checkDate = ExpiryDate::where('date', '=', $request->dateInput)->where('product_id', '=', $request->product_id)->first();
         if ($checkDate == null){
+            $validated = $request->validate([
+                'dateInput' => ['required', 'date'],
+                'product_id' => ['required', 'integer'],
+                'amount' => ['max:1000'],
+            ]);
             $expiryDate = new ExpiryDate();
             $expiryDate->date = $request->dateInput;
             $expiryDate->product_id = $request->product_id;
@@ -158,6 +163,9 @@ class ExpiryDatesController extends Controller
      */
     public function storeProduct(Request $request)
     {
+        $validated = $request->validate([
+            'nameProduct' => ['required', 'max:255', 'min:3', 'unique:products,name'],
+        ]);
         $checkProduct = Product::where('name', '=', $request->nameProduct)->first();
         if ($checkProduct == null){
             $product = new Product();

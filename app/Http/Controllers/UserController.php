@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Enum;
 
 class UserController extends Controller
 {
@@ -38,6 +40,14 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'first_name' => ['required', 'max:100'],
+            'last_name' => ['required', 'max:150'],
+            'name' => ['required', 'max:50', 'unique:users,name'],
+            'email' => ['required', 'max:50', 'unique:users,email'],
+            'phone' => ['max:20'],
+            'password' => ['required', 'confirmed', 'min:8', 'max:50']
+        ]);
         $user = new User();
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
@@ -84,6 +94,14 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validated = $request->validate([
+            'first_name' => ['required', 'max:100'],
+            'last_name' => ['required', 'max:150'],
+            'name' => ['required', 'max:50', 'unique:users,name'],
+            'email' => ['required', 'max:50', 'unique:users,email'],
+            'phone' => ['max:20', 'min:9'],
+            'password' => ['min:8', 'max:50']
+        ]);
         $user = User::find($id);
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
