@@ -61,7 +61,8 @@
                                                 class="fas fa-trash fa-lg link-danger"></i></button>
                                     </div>
                                     <small>Dodano: {{ $file->created_at }}</small>
-                                    <p><a class="link-success" target="_blank" href="{{ route('planogramDownload', $file->id) }}">Pobierz</a></p>
+                                    <p><a class="link-success" target="_blank"
+                                            href="{{ route('planogramDownload', $file->id) }}">Pobierz</a></p>
                                 </div>
                             </div>
                         @endforeach

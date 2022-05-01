@@ -66,7 +66,7 @@ Route::group(['middleware' => 'auth'], function () {
         //Planogramy user
         Route::group(['prefix' => 'planograms'], function () {
             Route::get('/', [PlanogramController::class, 'index'])->name('planograms');
-            Route::get('/list', [PlanogramController::class, 'index'])->name('userPlanograms');
+            Route::get('/list', [PlanogramController::class, 'list'])->name('userPlanograms');
             Route::get('/my', [PlanogramController::class, 'my'])->name('myPlanograms');
             Route::get('/show/{id}', [PlanogramController::class, 'show'])->name('planogramShow');
             Route::get('/download/{id}', [PlanogramController::class, 'download'])->name('planogramDownload');
@@ -109,7 +109,7 @@ Route::group(['middleware' => 'auth'], function () {
             });
 
             Route::group(['prefix' => 'planograms'], function () {
-                Route::get('/', [PlanogramController::class, 'list'])->name('adminPlanogram');
+                Route::get('/', [PlanogramController::class, 'adminList'])->name('adminPlanogram');
                 Route::post('/add', [PlanogramController::class, 'add'])->name('adminPlanogramAdd');
                 Route::get('/edit/{id}', [PlanogramController::class, 'edit'])->name('adminPlanogramEdit');
                 Route::get('/hide/{id}', [PlanogramController::class, 'hide'])->name('adminPlanogramHide');

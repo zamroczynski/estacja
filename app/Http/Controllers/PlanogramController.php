@@ -7,6 +7,7 @@ use App\Models\PlanogramFile;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class PlanogramController extends Controller
@@ -36,7 +37,7 @@ class PlanogramController extends Controller
             ]
         );
     }
-    public function list()
+    public function adminList()
     {
         try {
             $planograms = Planogram::orderBy('created_at', 'desc')->get();
@@ -94,6 +95,7 @@ class PlanogramController extends Controller
     {
         try {
             $planogramFile = PlanogramFile::find($id);
+            Storage::delete($planogramFile->path);
             $planogramFile->delete();
             return 'Pilk został usunięty!';
         } catch (\Throwable $th) {
@@ -121,7 +123,7 @@ class PlanogramController extends Controller
                     $planogramFile->save();
                 }
             }
-            return redirect()->route('adminPlanogramEdit', $request->id)->with('status', 'Edycja zakończona sukcesem!');
+            return redirect()->route('adminPlanogram')->with('status', 'Edycja zakończona sukcesem!');
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors([
                 'error' => 'Wystąpił błąd podczas edycji: ' . $th->getMessage()
@@ -167,11 +169,74 @@ class PlanogramController extends Controller
 
     public function hide(int $id)
     {
-        //do zrobienia
+        try {
+            $planogram = Planogram::find($id);
+            $planogram->current = 0;
+            $planogram->save();
+            return redirect()->back()->with('status', 'Planogram został ukryty!');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['Błąd serwera!']);
+        }
     }
 
     public function publish(int $id)
     {
-        //do zrobienia
+        try {
+            $planogram = Planogram::find($id);
+            $planogram->current = 1;
+            $planogram->save();
+            return redirect()->back()->with('status', 'Planogram został opublikowany!');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['Błąd serwera!']);
+        }
+    }
+
+    public function index()
+    {
+        return view('planogram.userMenu');
+    }
+
+    public function my()
+    {
+        try {
+            $planograms = Planogram::where([
+                ['current', '=', 1],
+                ['user_id', '=', Auth()->user()->id]
+                ])
+                ->orderBy('created_at', 'desc')
+                ->get();
+            return view('planogram.user', [
+                'planograms' => $planograms
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['Wystąpił błąd!']);
+        }
+    }
+
+    public function list()
+    {
+        try {
+            $planograms = Planogram::where('current', '=', 1)->orderBy('created_at', 'desc')->get();
+            return view('planogram.user', [
+                'planograms' => $planograms
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['Wystąpił błąd!']);
+        }
+    }
+
+    public function show($id)
+    {
+        try {
+            $planogram = Planogram::find($id);
+            $users = User::orderBy('created_at', 'desc')->get();
+            $files = PlanogramFile::where('planogram_id', '=', $id)->get();
+            return view('planogram.show', [
+                'planogram' => $planogram,
+                'files' => $files
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['Wystąpił błąd!']);
+        }
     }
 }
