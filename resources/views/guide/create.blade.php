@@ -10,6 +10,7 @@
 @endsection
 @section('content')
 <div class="container">
+    @include('layouts.alerts')
     <div class="row mt-5 position-relative">
         <div class="col"><h1 class="position-absolute top-0 start-50 translate-middle">Nowa Instrukcja</h1></div>
         <div class="col">

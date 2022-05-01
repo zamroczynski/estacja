@@ -2,13 +2,7 @@
 @section('content')
 
     <div class="container mt-3 mb-5">
-        @if (session('status'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('status') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            <div class="alert alert-succes"></div>
-        @endif
+        @include('layouts.alerts')
         <div class="row mb-2">
             <div class="col">
                 <div class="col"><a class="btn btn-secondary mb-2" style="float: right;"

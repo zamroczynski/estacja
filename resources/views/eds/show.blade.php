@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container mt-5 mb-5">
-
+    @include('layouts.alerts')
     <div class="row">
         <div class="col"><h3>Edytuj:</h3></div>
         <div class="col mb-3"><a class="btn btn-secondary" style="float: right;" href="{{ route('edsEdit') }}">Powrót</a></div>

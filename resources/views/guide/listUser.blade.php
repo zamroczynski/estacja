@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        @include('layouts.alerts')
         <div class="row mt-5 mb-3"><h1 class="text-center">Podręcznik</h1></div>
         @if (session('status'))
             <div class="alert alert-success alert-dismissible fade show my-3" role="alert">

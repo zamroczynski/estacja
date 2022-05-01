@@ -1,11 +1,16 @@
 @extends('layouts.main')
 
 @section('content')
+    @include('layouts.alerts')
     <div class="container mt-2 mb-5">
         <div class="row mt-5 mb-3 position-relative">
-            <div class="col"><h2 class="position-absolute top-0 start-50 translate-middle">Lista terminów na dzień: {{ date_format(date_create($oldDate), 'd.m.Y') }}</h2></div>
             <div class="col">
-                <a class="btn btn-secondary btn-lg" style="float: right; margin-left: 0.25rem" href="{{ route('edsPanel') }}" role="button">Powrót</a>
+                <h2 class="position-absolute top-0 start-50 translate-middle">Lista terminów na dzień:
+                    {{ date_format(date_create($oldDate), 'd.m.Y') }}</h2>
+            </div>
+            <div class="col">
+                <a class="btn btn-secondary btn-lg" style="float: right; margin-left: 0.25rem"
+                    href="{{ route('edsPanel') }}" role="button">Powrót</a>
             </div>
         </div>
         <div class="row mb-5">
@@ -32,7 +37,7 @@
         </div>
 
         <div class="col mt-5 mb-1">
-            <hr  />
+            <hr />
             <h3>Wybierz date:</h3>
         </div>
         <div class="row mb-5">

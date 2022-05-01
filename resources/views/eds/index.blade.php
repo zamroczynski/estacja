@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    @include('layouts.alerts')
     <div class="row mt-5"><h1 class="text-center">Terminy</h1></div>
     <div class="row">
         <div class="col">

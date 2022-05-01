@@ -2,14 +2,7 @@
 
 @section('content')
     <div class="container">
-        @if ($errors->any())
-            @foreach ($errors->all() as $error)
-                <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
-                    {{ $error }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endforeach
-        @endif
+        @include('layouts.alerts')
         <div class="row mt-5 position-relative">
             <div class="col">
                 <h1 class="position-absolute top-0 start-50 translate-middle">Planogramy</h1>
@@ -22,12 +15,6 @@
                     data-bs-toggle="modal">Dodaj nowy planogram</a>
             </div>
         </div>
-        @if (session('status'))
-            <div class="alert alert-success alert-dismissible fade show my-3" role="alert">
-                {{ session('status') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
         <div class="row mt-2">
             <div class="col">
                 <table class="table align-middle table-striped">

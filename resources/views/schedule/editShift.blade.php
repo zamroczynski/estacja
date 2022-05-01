@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mt-5 mb-5">
-
+        @include('layouts.alerts')
         <div class="row">
             <div class="col">
                 <h3>Edytuj:</h3>

@@ -1,13 +1,8 @@
 @extends('layouts.main')
 
 @section('content')
-
     <div class="container mt-5 mb-5">
-        @if ($errors->any())
-            <div class="alert alert-danger my-2">
-                <span class="text-center">Dodawanie nowego konta nie powiodło się.</span>
-            </div>
-        @endif
+        @include('layouts.alerts')
         <div class="row mb-1">
             <div class="col">
                 <h1>Lista pracowników:</h1>
@@ -174,5 +169,4 @@
             </form>
         </div>
     </div>
-
 @endsection

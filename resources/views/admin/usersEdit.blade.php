@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container mt-5 mb-5">
-
+    @include('layouts.alerts')
     <div class="row mb-1">
         <div class="col"><h1>Edycja pracownika:</h1></div>
         <div class="col">

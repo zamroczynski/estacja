@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container mt-5 mb-5">
+        @include('layouts.alerts')
         <div class="row mt-5 mb-3 position-relative">
             <div class="col">
                 <h2 class="position-absolute top-0 start-50 translate-middle">Dodaj terminy:</h2>
@@ -11,26 +12,6 @@
                     href="{{ route('edsPanel') }}" role="button">Powrót</a>
             </div>
         </div>
-        @if ($errors->any())
-            @foreach ($errors->all() as $error)
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    {{ $error }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endforeach
-        @endif
-        @if (session('status'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('status') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-        @if (session('error'))
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
         <div class="row">
             <div class="col mb-3">
                 <a class="btn btn-primary btn-lg" style="float: right;" href="#product" data-bs-toggle="modal"

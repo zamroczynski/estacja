@@ -2,12 +2,7 @@
 
 @section('content')
     <div class="container mt-5 mb-5">
-        @if (session('status'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('status') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+        @include('layouts.alerts')
         <div class="row mb-1">
             <div class="col">
                 <h1>Lista:</h1>
