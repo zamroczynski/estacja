@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ModuleName;
 use App\Models\Planogram;
 use App\Models\PlanogramFile;
 use App\Models\User;
+use App\Notifications\DbNotification;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
 class PlanogramController extends Controller
@@ -185,7 +188,11 @@ class PlanogramController extends Controller
             $planogram = Planogram::find($id);
             $planogram->current = 1;
             $planogram->save();
-            return redirect()->back()->with('status', 'Planogram został opublikowany!');
+            if ($planogram->user_id) {
+                $message = 'Został do Ciebie przypisany nowy planogram o nazwie: ' . $planogram->name;
+                Notification::send($planogram->user, new DbNotification($message, ModuleName::PLANOGRAMS));
+            }
+            return redirect()->back()->with('status', 'Planogram został opublikowany! Pracownik przypisany został powiadomiony!');
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['Błąd serwera!']);
         }
@@ -202,7 +209,7 @@ class PlanogramController extends Controller
             $planograms = Planogram::where([
                 ['current', '=', 1],
                 ['user_id', '=', Auth()->user()->id]
-                ])
+            ])
                 ->orderBy('created_at', 'desc')
                 ->get();
             return view('planogram.user', [
