@@ -49,6 +49,9 @@ class PreferenceController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'description' => ['max:255'],
+        ]);
         $checkPreference = Preference::where([
             ['user_id', '=', Auth::id()],
             ['date', '=', $request->dateP],

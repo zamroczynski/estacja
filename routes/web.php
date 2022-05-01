@@ -7,6 +7,7 @@ use App\Http\Controllers\PreferenceController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\GuideController;
+use App\Http\Controllers\PlanogramController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
@@ -57,8 +58,18 @@ Route::group(['middleware' => 'auth'], function () {
 
         //Podręcznik user
         Route::group(['prefix' => 'guide'], function () {
-            Route::get('/', [guideController::class, 'indexUser'])->name('guideList');
+            Route::get('/', [GuideController::class, 'indexUser'])->name('guideList');
             Route::get('/show/{id}', [GuideController::class, 'show'])->name('guideShow');
+        });
+
+
+        //Planogramy user
+        Route::group(['prefix' => 'planograms'], function () {
+            Route::get('/', [PlanogramController::class, 'index'])->name('planograms');
+            Route::get('/list', [PlanogramController::class, 'list'])->name('userPlanograms');
+            Route::get('/my', [PlanogramController::class, 'my'])->name('myPlanograms');
+            Route::get('/show/{id}', [PlanogramController::class, 'show'])->name('planogramShow');
+            Route::get('/download/{id}', [PlanogramController::class, 'download'])->name('planogramDownload');
         });
 
 
@@ -98,7 +109,13 @@ Route::group(['middleware' => 'auth'], function () {
             });
 
             Route::group(['prefix' => 'planograms'], function () {
-                Route::get('/', [UserController::class, 'index'])->name('adminPlanograms');
+                Route::get('/', [PlanogramController::class, 'adminList'])->name('adminPlanogram');
+                Route::post('/add', [PlanogramController::class, 'add'])->name('adminPlanogramAdd');
+                Route::get('/edit/{id}', [PlanogramController::class, 'edit'])->name('adminPlanogramEdit');
+                Route::get('/hide/{id}', [PlanogramController::class, 'hide'])->name('adminPlanogramHide');
+                Route::get('/publish/{id}', [PlanogramController::class, 'publish'])->name('adminPlanogramPublish');
+                Route::post('/update', [PlanogramController::class, 'update'])->name('adminPlanogramUpdate');
+                Route::get('/file/delete/{id}', [PlanogramController::class, 'deleteFile'])->name('adminPlanogramDeleteFile');
             });
 
             Route::group(['prefix' => 'guide'], function () {
@@ -116,14 +133,6 @@ Route::group(['middleware' => 'auth'], function () {
             Route::group(['prefix' => 'schedule'], function () {
                 Route::get('/', function () {return view('schedule.admin');})->name('adminSchedule');
                 Route::get('/preferences', [PreferenceController::class, 'indexAdmin'])->name('adminPreferences');
-
-                Route::group(['prefix' => 'shift'], function () {
-                    Route::get('/', [ShiftController::class, 'index'])->name('shiftList');
-                    Route::post('/add', [ShiftController::class, 'store'])->name('shiftAdd');
-                    Route::get('/edit/{id}', [ShiftController::class, 'edit'])->name('shiftEdit');
-                    Route::post('/edit/{id}', [ShiftController::class, 'update'])->name('shiftUpdate');
-                });
-
                 Route::get('/create', [ScheduleController::class, 'create'])->name('scheduleCreate');
                 Route::post('/create', [ScheduleController::class, 'save'])->name('scheduleSave');
                 Route::get('/list', [ScheduleController::class, 'indexAdmin'])->name('scheduleManage');
@@ -132,6 +141,12 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/edit/{id}', [ScheduleController::class, 'edit'])->name('scheduleEdit');
                 Route::post('/edit', [ScheduleController::class, 'store'])->name('scheduleStore');
 
+                Route::group(['prefix' => 'shift'], function () {
+                    Route::get('/', [ShiftController::class, 'index'])->name('shiftList');
+                    Route::post('/add', [ShiftController::class, 'store'])->name('shiftAdd');
+                    Route::get('/edit/{id}', [ShiftController::class, 'edit'])->name('shiftEdit');
+                    Route::post('/edit/{id}', [ShiftController::class, 'update'])->name('shiftUpdate');
+                });
             });
         });
     });

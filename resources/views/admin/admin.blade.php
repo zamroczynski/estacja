@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    @include('layouts.alerts')
     <div class="row mt-5"><h1 class="text-center">Administracja</h1></div>
     <div class="row">
         <div class="col">
@@ -29,7 +30,7 @@
         <div class="col">
             <div class="card mt-5" >
                 <div class="card-body">
-                    <a href="#" class="link-secondary">
+                    <a href="{{ route('adminPlanogram') }}" class="link-secondary">
                         <h5 class="card-title text-center"><i class="fas fa-th fa-7x"></i></h5>
                         <p class="card-text text-center fs-4">Planogramy</p>
                     </a>
