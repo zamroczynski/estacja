@@ -2,14 +2,7 @@
 
 @section('content')
     <div class="container">
-        @if ($errors->any())
-            @foreach ($errors->all() as $error)
-                <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
-                    {{ $error }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endforeach
-        @endif
+        @include('layouts.alerts')
         <div class="row mt-5 position-relative">
             <div class="col">
                 <h2 class="position-absolute top-0 start-50 translate-middle">Edytuj Planogram</h2>
@@ -19,12 +12,6 @@
                     href="{{ url()->previous() }}" role="button">Powrót</a>
             </div>
         </div>
-        @if (session('status'))
-            <div class="alert alert-success alert-dismissible fade show my-3" role="alert">
-                {{ session('status') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
         <div class="row mt-2">
             <div class="col">
                 <form id="product" action="{{ route('adminPlanogramUpdate') }}" method="POST"
@@ -69,11 +56,12 @@
                                 <div class="list-group-item list-group-item-action">
                                     <div class="d-flex w-100 justify-content-between">
                                         <p class="mb-1">Nazwa pliku: {{ $file->name }}</p>
-                                        <button type="button" class="border-0 bg-transparent" role="button" onclick="delete_file({{ $file->id }})"><i
+                                        <button type="button" class="border-0 bg-transparent" role="button"
+                                            onclick="delete_file({{ $file->id }})"><i
                                                 class="fas fa-trash fa-lg link-danger"></i></button>
                                     </div>
                                     <small>Dodano: {{ $file->created_at }}</small>
-                                    <p><a target="_blank" href="{{ route('planogramDownload', $file->id) }}">Pobierz</a></p>
+                                    <p><a class="link-success" target="_blank" href="{{ route('planogramDownload', $file->id) }}">Pobierz</a></p>
                                 </div>
                             </div>
                         @endforeach
@@ -91,11 +79,11 @@
 @section('js')
     <script>
         function delete_file(id) {
-            axios.get('/admin/planograms/file/delete/'+id)
+            axios.get('/admin/planograms/file/delete/' + id)
                 .then(function(response) {
                     // handle success
                     console.log(response);
-                    $('#file'+id).hide();
+                    $('#file' + id).hide();
                 })
                 .catch(function(error) {
                     // handle error

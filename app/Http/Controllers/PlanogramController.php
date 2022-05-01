@@ -38,44 +38,56 @@ class PlanogramController extends Controller
     }
     public function list()
     {
-        $planograms = Planogram::orderBy('created_at', 'desc')->get();
-        $users = User::orderBy('created_at', 'desc')->get();
-        return view('planogram.admin', [
-            'planograms' => $planograms,
-            'users' => $users
-        ]);
+        try {
+            $planograms = Planogram::orderBy('created_at', 'desc')->get();
+            $users = User::orderBy('created_at', 'desc')->get();
+            return view('planogram.admin', [
+                'planograms' => $planograms,
+                'users' => $users
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['Wystąpił błąd!']);
+        }
     }
 
     public function add(Request $request)
     {
-        $this->checkForm($request);
-        $planogram = new Planogram();
-        $planogram->name = $request->name;
-        $planogram->date_start = $request->date;
-        if ($request->user > 0) {
-            $planogram->user_id = $request->user;
+        try {
+            $this->checkForm($request);
+            $planogram = new Planogram();
+            $planogram->name = $request->name;
+            $planogram->date_start = $request->date;
+            if ($request->user > 0) {
+                $planogram->user_id = $request->user;
+            }
+            $planogram->save();
+            foreach ($request->file('planogram') as $file) {
+                $planogramFile = new PlanogramFile();
+                $planogramFile->name = $file->getClientOriginalName();
+                $planogramFile->path = $file->store('planogram');
+                $planogramFile->planogram_id = $planogram->id;
+                $planogramFile->save();
+            }
+            return redirect()->route('adminPlanogram')->with('status', 'Dodano nowy planogram!');
+        } catch (\Throwable $th) {
+            return redirect()->route('adminPlanogram')->withErrors('Wystąpił błąd podczas dodawania planogramu');
         }
-        $planogram->save();
-        foreach ($request->file('planogram') as $file) {
-            $planogramFile = new PlanogramFile();
-            $planogramFile->name = $file->getClientOriginalName();
-            $planogramFile->path = $file->store('planogram');
-            $planogramFile->planogram_id = $planogram->id;
-            $planogramFile->save();
-        }
-        return redirect()->route('adminPlanogram');
     }
 
     public function edit(int $id)
     {
-        $planogram = Planogram::find($id);
-        $users = User::orderBy('created_at', 'desc')->get();
-        $files = PlanogramFile::where('planogram_id', '=', $id)->get();
-        return view('planogram.edit', [
-            'planogram' => $planogram,
-            'users' => $users,
-            'files' => $files
-        ]);
+        try {
+            $planogram = Planogram::find($id);
+            $users = User::orderBy('created_at', 'desc')->get();
+            $files = PlanogramFile::where('planogram_id', '=', $id)->get();
+            return view('planogram.edit', [
+                'planogram' => $planogram,
+                'users' => $users,
+                'files' => $files
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['Wystąpił błąd!']);
+        }
     }
 
     public function deleteFile(int $id)
@@ -87,62 +99,70 @@ class PlanogramController extends Controller
         } catch (\Throwable $th) {
             return 'Nastąpił błąd: ' . $th->getMessage();
         }
-
     }
 
     public function update(Request $request)
     {
-        $this->checkForm($request, TRUE);
-        $planogram = Planogram::find($request->id);
-        $planogram->name = $request->name;
-        $planogram->date_start = $request->date;
-        if ($request->user > 0) {
-            $planogram->user_id = $request->user;
-        }
-        $planogram->save();
-        if ($request->has('planogram')) {
-            foreach ($request->file('planogram') as $file) {
-                $planogramFile = new PlanogramFile();
-                $planogramFile->name = $file->getClientOriginalName();
-                $planogramFile->path = $file->store('planogram');
-                $planogramFile->planogram_id = $planogram->id;
-                $planogramFile->save();
+        try {
+            $this->checkForm($request, TRUE);
+            $planogram = Planogram::find($request->id);
+            $planogram->name = $request->name;
+            $planogram->date_start = $request->date;
+            if ($request->user > 0) {
+                $planogram->user_id = $request->user;
             }
+            $planogram->save();
+            if ($request->has('planogram')) {
+                foreach ($request->file('planogram') as $file) {
+                    $planogramFile = new PlanogramFile();
+                    $planogramFile->name = $file->getClientOriginalName();
+                    $planogramFile->path = $file->store('planogram');
+                    $planogramFile->planogram_id = $planogram->id;
+                    $planogramFile->save();
+                }
+            }
+            return redirect()->route('adminPlanogramEdit', $request->id)->with('status', 'Edycja zakończona sukcesem!');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors([
+                'error' => 'Wystąpił błąd podczas edycji: ' . $th->getMessage()
+            ]);
         }
-        return redirect()->route('adminPlanogram');
     }
 
     public function download(int $id)
     {
-        $planogram = PlanogramFile::find($id);
-        $pathInfo = pathinfo($planogram->path);
-        $contentType = '';
-        switch ($pathInfo['extension']) {
-            case 'pdf':
-                $contentType = 'application/pdf';
-                break;
+        try {
+            $planogram = PlanogramFile::find($id);
+            $pathInfo = pathinfo($planogram->path);
+            switch ($pathInfo['extension']) {
+                case 'pdf':
+                    $contentType = 'application/pdf';
+                    break;
 
-            case 'png':
-                $contentType = 'image/png';
-                break;
+                case 'png':
+                    $contentType = 'image/png';
+                    break;
 
-            case 'jpeg':
-                $contentType = 'image/jpeg';
-                break;
+                case 'jpeg':
+                    $contentType = 'image/jpeg';
+                    break;
 
-            case 'jpg':
-                $contentType = 'image/jpg';
-                break;
+                case 'jpg':
+                    $contentType = 'image/jpg';
+                    break;
 
-            default:
-                throw new Exception("Bad file extension!", 1);
-                break;
+                default:
+                    throw new Exception("Bad file extension!", 1);
+                    break;
+            }
+            if ($pathInfo['extension'])
+                return response()->file($planogram->path, [
+                    'Content-Type' => $contentType,
+                    'Content-Disposition' => 'inline; filename="' . $planogram->name . '"'
+                ]);
+        } catch (\Throwable $th) {
+            return response('Błąd pobierania! Spróbuj ponownie później lub skontaktuj się z administratorem.', 500);
         }
-        if ($pathInfo['extension'])
-            return response()->file($planogram->path, [
-                'Content-Type' => $contentType,
-                'Content-Disposition' => 'inline; filename="' . $planogram->name . '"'
-            ]);
     }
 
     public function hide(int $id)
