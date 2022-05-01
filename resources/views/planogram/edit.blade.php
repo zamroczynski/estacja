@@ -27,9 +27,10 @@
         @endif
         <div class="row mt-2">
             <div class="col">
-                <form id="product" action="{{ route('adminPlanogramUpdate') }}" method="POST" enctype="multipart/form-data">
+                <form id="product" action="{{ route('adminPlanogramUpdate') }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" name="id" value="{{$planogram->id}}">
+                    <input type="hidden" name="id" value="{{ $planogram->id }}">
                     <div class="col mb-3 mt-1">
                         <label for="name" class="form-label">Nazwa:</label>
                         <input type="text" id="name" class="form-control form-control-lg" name="name"
@@ -62,15 +63,17 @@
                         <small class="fs-10">Obsługiwane formaty: PDF, JPEG, PNG</small>
                     </div>
                     @isset($files)
-                    <h4>Przypisane pliki:</h4>
+                        <h4>Przypisane pliki:</h4>
                         @foreach ($files as $file)
-                            <div class="list-group mb-3">
+                            <div class="list-group mb-3" id="file{{ $file->id }}">
                                 <div class="list-group-item list-group-item-action">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <p class="mb-1">Nazwa pliku: {{$file->name}}</p>
-                                        <a href="{{ route('adminPlanogramDeleteFile', $file->id)}}"><i class="fas fa-trash fa-lg link-danger"></i></a>
+                                        <p class="mb-1">Nazwa pliku: {{ $file->name }}</p>
+                                        <button type="button" class="border-0 bg-transparent" role="button" onclick="delete_file({{ $file->id }})"><i
+                                                class="fas fa-trash fa-lg link-danger"></i></button>
                                     </div>
-                                    <small>Dodano: {{$file->created_at}}</small>
+                                    <small>Dodano: {{ $file->created_at }}</small>
+                                    <p><a target="_blank" href="{{ route('planogramDownload', $file->id) }}">Pobierz</a></p>
                                 </div>
                             </div>
                         @endforeach
@@ -87,5 +90,17 @@
 @endsection
 @section('js')
     <script>
+        function delete_file(id) {
+            axios.get('/admin/planograms/file/delete/'+id)
+                .then(function(response) {
+                    // handle success
+                    console.log(response);
+                    $('#file'+id).hide();
+                })
+                .catch(function(error) {
+                    // handle error
+                    console.log(error);
+                });
+        }
     </script>
 @endsection

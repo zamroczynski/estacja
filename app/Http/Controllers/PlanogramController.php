@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Planogram;
 use App\Models\PlanogramFile;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -79,7 +80,14 @@ class PlanogramController extends Controller
 
     public function deleteFile(int $id)
     {
-        //do zrobienia
+        try {
+            $planogramFile = PlanogramFile::find($id);
+            $planogramFile->delete();
+            return 'Pilk został usunięty!';
+        } catch (\Throwable $th) {
+            return 'Nastąpił błąd: ' . $th->getMessage();
+        }
+
     }
 
     public function update(Request $request)
@@ -102,5 +110,48 @@ class PlanogramController extends Controller
             }
         }
         return redirect()->route('adminPlanogram');
+    }
+
+    public function download(int $id)
+    {
+        $planogram = PlanogramFile::find($id);
+        $pathInfo = pathinfo($planogram->path);
+        $contentType = '';
+        switch ($pathInfo['extension']) {
+            case 'pdf':
+                $contentType = 'application/pdf';
+                break;
+
+            case 'png':
+                $contentType = 'image/png';
+                break;
+
+            case 'jpeg':
+                $contentType = 'image/jpeg';
+                break;
+
+            case 'jpg':
+                $contentType = 'image/jpg';
+                break;
+
+            default:
+                throw new Exception("Bad file extension!", 1);
+                break;
+        }
+        if ($pathInfo['extension'])
+            return response()->file($planogram->path, [
+                'Content-Type' => $contentType,
+                'Content-Disposition' => 'inline; filename="' . $planogram->name . '"'
+            ]);
+    }
+
+    public function hide(int $id)
+    {
+        //do zrobienia
+    }
+
+    public function publish(int $id)
+    {
+        //do zrobienia
     }
 }

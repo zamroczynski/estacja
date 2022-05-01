@@ -69,6 +69,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/list', [PlanogramController::class, 'index'])->name('userPlanograms');
             Route::get('/my', [PlanogramController::class, 'my'])->name('myPlanograms');
             Route::get('/show/{id}', [PlanogramController::class, 'show'])->name('planogramShow');
+            Route::get('/download/{id}', [PlanogramController::class, 'download'])->name('planogramDownload');
         });
 
 
@@ -111,6 +112,8 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/', [PlanogramController::class, 'list'])->name('adminPlanogram');
                 Route::post('/add', [PlanogramController::class, 'add'])->name('adminPlanogramAdd');
                 Route::get('/edit/{id}', [PlanogramController::class, 'edit'])->name('adminPlanogramEdit');
+                Route::get('/hide/{id}', [PlanogramController::class, 'hide'])->name('adminPlanogramHide');
+                Route::get('/publish/{id}', [PlanogramController::class, 'publish'])->name('adminPlanogramPublish');
                 Route::post('/update', [PlanogramController::class, 'update'])->name('adminPlanogramUpdate');
                 Route::get('/file/delete/{id}', [PlanogramController::class, 'deleteFile'])->name('adminPlanogramDeleteFile');
             });

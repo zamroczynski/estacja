@@ -53,6 +53,13 @@
                                     @endisset
                                 </td>
                                 <td>
+                                    @if ($planogram->current)
+                                    <a class="btn btn-secondary btn-sm"
+                                    href="{{ route('adminPlanogramHide', $planogram->id) }}" role="button">Ukryj</a>
+                                    @else
+                                    <a class="btn btn-success btn-sm"
+                                    href="{{ route('adminPlanogramPublish', $planogram->id) }}" role="button">Publikuj</a>
+                                    @endif
                                     <a class="btn btn-warning btn-sm"
                                         href="{{ route('adminPlanogramEdit', $planogram->id) }}" role="button">Edytuj</a>
                                 </td>
