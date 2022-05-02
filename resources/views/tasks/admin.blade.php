@@ -23,9 +23,14 @@
                     href="{{ route('adminTaskCreate') }}" role="button">Przydziel nowe zadanie</a>
             </div>
         </div>
+        <div class="row mt-3 mb-2">
+            <div class="col">
+                <input type="text" id="search" class="form-control form-control-lg text-center" placeholder="Szukaj..." />
+            </div>
+        </div>
         <div class="row mt-2">
             <div class="col">
-                <table class="table align-middle table-striped">
+                <table id="table" class="table align-middle table-striped">
                     <thead>
                         <tr>
                             <th>Nazwa</th>
@@ -73,5 +78,14 @@
     </div>
 @endsection
 @section('js')
-    <script></script>
+    <script>
+        $(document).ready(function() {
+            $("#search").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#table tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
 @endsection

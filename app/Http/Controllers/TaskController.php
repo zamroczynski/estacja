@@ -19,7 +19,6 @@ class TaskController extends Controller
     {
         try {
             $tasks = Task::orderBy('created_at', 'desc')->get();
-
             return view('tasks.admin', ['tasks' => $tasks]);
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['Wystąpił błąd!']);
