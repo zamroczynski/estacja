@@ -8,6 +8,7 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\GuideController;
 use App\Http\Controllers\PlanogramController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
@@ -92,6 +93,7 @@ Route::group(['middleware' => 'auth'], function () {
             'middleware' => 'can:isAdmin'
         ], function () {
             Route::get('/', function () {return view('admin.admin');})->name('adminPanel');
+            Route::post('/upload', [GuideController::class, 'uploadTrix'])->name('adminUploadTrix');
 
             Route::group(['prefix' => 'users'], function () {
                 Route::get('/', [UserController::class, 'index'])->name('adminUsers');
@@ -101,7 +103,10 @@ Route::group(['middleware' => 'auth'], function () {
             });
 
             Route::group(['prefix' => 'tasks'], function () {
-                Route::get('/', [UserController::class, 'index'])->name('adminTasks');
+                Route::get('/', [TaskController::class, 'index'])->name('adminTasks');
+                Route::get('/show/{task}', [TaskController::class, 'show'])->name('adminTaskShow');
+                Route::get('/create', [TaskController::class, 'create'])->name('adminTaskCreate');
+                Route::post('/store', [TaskController::class, 'store'])->name('adminTaskStore');
             });
 
             Route::group(['prefix' => 'messages'], function () {
@@ -123,7 +128,6 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/list', [GuideController::class, 'index'])->name('adminGuideList');
                 Route::get('/create', [GuideController::class, 'create'])->name('adminGuideCreate');
                 Route::post('/store', [GuideController::class, 'store'])->name('adminGuideStore');
-                Route::post('/upload', [GuideController::class, 'upload'])->name('adminGuideUpload');
                 Route::get('/edit/{id}', [GuideController::class, 'edit'])->name('adminGuideEdit');
                 Route::post('/public', [GuideController::class, 'public'])->name('adminGuidePublic');
                 Route::post('/unpublic', [GuideController::class, 'unpublic'])->name('adminGuideUnPublic');

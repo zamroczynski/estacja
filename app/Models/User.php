@@ -65,4 +65,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Planogram::class);
     }
+
+    public function task()
+    {
+        return $this->hasMany(Planogram::class);
+    }
 }
