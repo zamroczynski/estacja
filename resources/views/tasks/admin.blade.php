@@ -30,14 +30,29 @@
                         <tr>
                             <th>Nazwa</th>
                             <th>Przydzielony pracownik</th>
-                            <th>Termin oddania</th>
+                            <th>Termin</th>
                             <th>Wykonanie</th>
                             <th>Opcje</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($tasks as $task)
-                            <tr>
+                            @php
+                                $bg = '';
+                                if (!$task->done) {
+                                    $today = new DateTime('today');
+                                    $matchDate = DateTime::createFromFormat('Y-m-d', $task->deadline);
+                                    $matchDate->setTime(0, 0, 0);
+                                    $diff = $today->diff($matchDate);
+                                    $diffDays = (int) $diff->format('%R%a');
+                                    if ($diffDays == 0) {
+                                        $bg = 'bg-warning bg-opacity-50';
+                                    } elseif ($diffDays < 0) {
+                                        $bg = 'bg-danger bg-opacity-50';
+                                    }
+                                }
+                            @endphp
+                            <tr class="{{ $bg }}">
                                 <td>{{ $task->title }}</td>
                                 <td>
                                     {{ $task->user->first_name }}
@@ -58,5 +73,5 @@
     </div>
 @endsection
 @section('js')
-<script></script>
+    <script></script>
 @endsection
