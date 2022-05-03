@@ -55,6 +55,8 @@
                                     } elseif ($diffDays < 0) {
                                         $bg = 'bg-danger bg-opacity-50';
                                     }
+                                } else {
+                                    $bg = 'bg-success bg-opacity-50';
                                 }
                             @endphp
                             <tr class="{{ $bg }}">
