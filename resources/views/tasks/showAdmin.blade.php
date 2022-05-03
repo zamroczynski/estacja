@@ -69,7 +69,7 @@
                     </div>
                     <div class="col">
                         <a class="btn btn-secondary btn-lg" href="{{ route('adminTasks') }}" role="button">Powrót</a>
-                        <a class="btn btn-primary btn-lg" href="{{ route('adminTaskCopy') }}" role="button">Kopiuj zadanie</a>
+                        <a class="btn btn-primary btn-lg" href="{{ route('adminTaskCopy', $task->id) }}" role="button">Kopiuj zadanie</a>
                     </div>
                 </form>
             </div>

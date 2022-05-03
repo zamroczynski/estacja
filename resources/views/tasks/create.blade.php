@@ -27,11 +27,12 @@
                     @csrf
                     <div class="col mb-3 mt-1">
                         <label for="name" class="form-label">Tytuł:</label>
-                        <input type="text" id="title" class="form-control form-control-lg" name="title" required />
+                        <input type="text" id="title" class="form-control form-control-lg" name="title"
+                            @isset($task) value="{{ $task->title }}" @endisset required />
                     </div>
                     <div class="col mb-3 mt-1">
                         <label for="description" class="form-label">Treść:</label>
-                        <input type="hidden" id="post_body" value="" placeholder="..." name="content">
+                        <input type="hidden" id="post_body" @isset($task) value="{{ $task->description }}" @endisset placeholder="..." name="content">
                         <trix-editor id="description" input="post_body" class="trix-content" data-controller="trix"
                             data-action="trix-attachment-add->trix#upload">
                         </trix-editor>

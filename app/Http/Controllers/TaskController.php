@@ -124,7 +124,8 @@ class TaskController extends Controller
             $users = User::orderBy('created_at', 'desc')->get();
             return view('tasks.edit', [
                 'task' => $task,
-                'users' => $users
+                'users' => $users,
+                'copy' => FALSE
             ]);
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['Wystąpił błąd!']);
@@ -168,7 +169,16 @@ class TaskController extends Controller
      */
     public function copy(int $id)
     {
-        // do zrobienia
+        try {
+            $task = Task::find($id);
+            $users = User::orderBy('created_at', 'desc')->get();
+            return view('tasks.create', [
+                'task' => $task,
+                'users' => $users
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['Wystąpił błąd!']);
+        }
     }
 
     /**
