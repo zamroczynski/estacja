@@ -17,7 +17,8 @@ class Task extends Model
         'user_id',
         'admin_id',
         'comment',
-        'archival'
+        'archival',
+        'last_id'
     ];
 
     public function user()
@@ -26,6 +27,11 @@ class Task extends Model
     }
 
     public function admin()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function last()
     {
         return $this->belongsTo(User::class);
     }

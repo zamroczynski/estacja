@@ -74,7 +74,8 @@ class TaskController extends Controller
                 'deadline' => $request->deadline,
                 'done' => FALSE,
                 'user_id' => $request->user,
-                'admin_id' => Auth()->user()->id
+                'admin_id' => Auth()->user()->id,
+                'last_id' => Auth()->user()->id
             ]);
             return redirect()->route('adminTaskCreate')->with('status', 'Dodano nowe zadanie!');
         } catch (\Throwable $th) {
@@ -92,7 +93,7 @@ class TaskController extends Controller
     {
         try {
             $task = Task::find($id);
-            return view('tasks.admin', ['tasks' => $task]);
+            return view('tasks.showAdmin', ['task' => $task]);
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['Wystąpił błąd!']);
         }
