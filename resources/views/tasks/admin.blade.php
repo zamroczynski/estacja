@@ -70,6 +70,8 @@
                                 <td>
                                     <a class="btn btn-primary btn-sm" href="{{ route('adminTaskShow', $task->id) }}"
                                         role="button">Wyświetl</a>
+                                    <a class="btn btn-warning btn-sm" href="{{ route('adminTaskEdit', $task->id) }}"
+                                            role="button">Edycja</a>
                                 </td>
                             </tr>
                         @endforeach

@@ -8,7 +8,7 @@
             </div>
             <div class="col">
                 <a class="btn btn-secondary btn-lg" style="float: right; margin-left: 0.25rem"
-                    href="{{ redirect()->back() }}" role="button">Powrót</a>
+                    href="{{ route('adminTasks') }}" role="button">Powrót</a>
             </div>
         </div>
         <div class="row mb-3">
@@ -41,7 +41,7 @@
                     <div class="col mb-3 mt-2">
                         <label for="done" class="form-label">Czy zadanie zostało wykonane:</label>
                         <input type="text" id="done" class="form-control form-control-lg" name="done"
-                            value="{{ $task->done ? "Tak" : "Nie" }}" disabled />
+                            value="{{ $task->done ? 'Tak' : 'Nie' }}" disabled />
                     </div>
                     <label for="comment" class="form-label">Komentarz:</label>
                     <textarea name="comment" id="comment" rows="5" class="form-control" disabled>
@@ -68,7 +68,8 @@
                             value="{{ $task->admin->first_name }} {{ $task->admin->last_name }}" disabled />
                     </div>
                     <div class="col">
-                        <input type="submit" class="btn btn-success btn-lg" value="Przydziel nowe zadanie" />
+                        <a class="btn btn-secondary btn-lg" href="{{ route('adminTasks') }}" role="button">Powrót</a>
+                        <a class="btn btn-primary btn-lg" href="{{ route('adminTaskCopy') }}" role="button">Kopiuj zadanie</a>
                     </div>
                 </form>
             </div>

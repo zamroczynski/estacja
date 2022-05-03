@@ -14,7 +14,7 @@
         @include('layouts.alerts')
         <div class="row mt-5 position-relative">
             <div class="col">
-                <h1 class="position-absolute top-0 start-50 translate-middle">Przydziel nowe zadanie</h1>
+                <h1 class="position-absolute top-0 start-50 translate-middle">Edycja zadania</h1>
             </div>
             <div class="col">
                 <a class="btn btn-secondary btn-lg" style="float: right; margin-left: 0.25rem"
@@ -23,15 +23,16 @@
         </div>
         <div class="row mt-2">
             <div class="col">
-                <form id="task" action="{{ route('adminTaskStore') }}" method="POST" enctype="multipart/form-data">
+                <form id="task" action="{{ route('adminTaskUpdate', $task->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="col mb-3 mt-1">
                         <label for="name" class="form-label">Tytuł:</label>
-                        <input type="text" id="title" class="form-control form-control-lg" name="title" required />
+                        <input type="text" id="title" class="form-control form-control-lg" name="title"
+                            value="{{ $task->title }}" required />
                     </div>
                     <div class="col mb-3 mt-1">
                         <label for="description" class="form-label">Treść:</label>
-                        <input type="hidden" id="post_body" value="" placeholder="..." name="content">
+                        <input type="hidden" id="post_body" value="{{ $task->description }}" placeholder="..." name="content">
                         <trix-editor id="description" input="post_body" class="trix-content" data-controller="trix"
                             data-action="trix-attachment-add->trix#upload">
                         </trix-editor>
@@ -39,20 +40,35 @@
                     <div class="col mb-3 mt-2">
                         <label for="user" class="form-label">Pracownik:</label>
                         <select id="user" class="form-select form-control-lg" name="user" required>
-                            <option value="-1">-</option>
                             @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->first_name }}
-                                    {{ $user->last_name }}</option>
+                                @if ($user->id == $task->user->id)
+                                    <option value="{{ $user->id }}" selected>{{ $user->first_name }}
+                                        {{ $user->last_name }}</option>
+                                @else
+                                    <option value="{{ $user->id }}">{{ $user->first_name }}
+                                        {{ $user->last_name }}</option>
+                                @endif
                             @endforeach
                         </select>
                     </div>
                     <div class="col mb-3 mt-2">
                         <label for="deadline" class="form-label">Termin wykonania:</label>
-                        <input type="date" id="deadline" min="1900-01-01" max="3000-12-31"
+                        <input type="date" id="deadline" min="1900-01-01" max="3000-12-31" value="{{ $task->deadline }}"
                             class="form-control form-control-lg" name="deadline" required />
                     </div>
+                    <div class="col mb-3 mt-2">
+                        <label for="done" class="form-label form-label-lg">Czy zadanie zostało wykonane:</label>
+                        <select name="done" id="done" class="form-control form-control-lg" required>
+                                <option value="0">Nie</option>
+                                <option value="1" @if ($task->done) selected @endif>Tak</option>
+                        </select>
+                    </div>
+                    <div class="col mb-3 mt-1">
+                        <label for="comment" class="form-label">Komentarz:</label>
+                        <textarea name="comment" id="comment" rows="5" class="form-control">{{ $task->comment }}</textarea>
+                    </div>
                     <div class="col">
-                        <input type="submit" class="btn btn-success btn-lg" value="Przydziel nowe zadanie" />
+                        <input type="submit" class="btn btn-success btn-lg" value="Zapisz zmiany" />
                     </div>
                 </form>
             </div>

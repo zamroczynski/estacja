@@ -107,6 +107,9 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/show/{task}', [TaskController::class, 'show'])->name('adminTaskShow');
                 Route::get('/create', [TaskController::class, 'create'])->name('adminTaskCreate');
                 Route::post('/store', [TaskController::class, 'store'])->name('adminTaskStore');
+                Route::get('/edit/{task}', [TaskController::class, 'edit'])->name('adminTaskEdit');
+                Route::post('/update/{task}', [TaskController::class, 'update'])->name('adminTaskUpdate');
+                Route::post('/copy/{task}', [TaskController::class, 'copy'])->name('adminTaskCopy');
             });
 
             Route::group(['prefix' => 'messages'], function () {
