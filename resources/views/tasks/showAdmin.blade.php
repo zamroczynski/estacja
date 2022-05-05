@@ -8,13 +8,18 @@
             </div>
             <div class="col">
                 <a class="btn btn-secondary btn-lg" style="float: right; margin-left: 0.25rem"
-                    href="{{ route('adminTasks') }}" role="button">Powrót</a>
+                    href="@if($task->archival) {{route('adminTaskArchives')}} @else {{ route('adminTasks') }} @endif" role="button">Powrót</a>
             </div>
         </div>
         <div class="row mb-3">
             <div class="col">
                 <form id="task" action="{{ route('adminTaskStore') }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    <div class="col mb-3 mt-1">
+                        @if($task->archival)
+                            <h6 class="badge bg-warning">Zadanie archiwalne</h6>
+                        @endif
+                    </div>
                     <div class="col mb-3 mt-1">
                         <label for="name" class="form-label">Tytuł:</label>
                         <input type="text" id="title" class="form-control form-control-lg" name="title"
@@ -66,6 +71,11 @@
                         <label for="admin" class="form-label">Zadanie utworzone przez:</label>
                         <input type="text" id="admin" class="form-control form-control-lg" name="admin"
                             value="{{ $task->admin->first_name }} {{ $task->admin->last_name }}" disabled />
+                    </div>
+                    <div class="col mb-3 mt-1">
+                        @if($task->archival)
+                            <h6 class="badge bg-warning">Zadanie archiwalne</h6>
+                        @endif
                     </div>
                     <div class="col">
                         <a class="btn btn-secondary btn-lg" href="{{ route('adminTasks') }}" role="button">Powrót</a>

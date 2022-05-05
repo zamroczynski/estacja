@@ -110,6 +110,8 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/edit/{task}', [TaskController::class, 'edit'])->name('adminTaskEdit');
                 Route::post('/update/{task}', [TaskController::class, 'update'])->name('adminTaskUpdate');
                 Route::get('/copy/{task}', [TaskController::class, 'copy'])->name('adminTaskCopy');
+                Route::get('/archive/{task}', [TaskController::class, 'archive'])->name('adminTaskArchive');
+                Route::get('/archives', [TaskController::class, 'archives'])->name('adminTaskArchives');
             });
 
             Route::group(['prefix' => 'messages'], function () {

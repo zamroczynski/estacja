@@ -21,7 +21,7 @@ class TaskController extends Controller
     public function index()
     {
         try {
-            $tasks = Task::orderBy('created_at', 'desc')->get();
+            $tasks = Task::where('archival', '=', '0')->orderBy('created_at', 'desc')->get();
             return view('tasks.admin', ['tasks' => $tasks]);
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['Wystąpił błąd!']);
@@ -124,8 +124,7 @@ class TaskController extends Controller
             $users = User::orderBy('created_at', 'desc')->get();
             return view('tasks.edit', [
                 'task' => $task,
-                'users' => $users,
-                'copy' => FALSE
+                'users' => $users
             ]);
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['Wystąpił błąd!']);
@@ -182,13 +181,36 @@ class TaskController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Change task status.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $id)
+    public function archive(int $id)
     {
-        //
+        try {
+            $task = Task::find($id);
+            $task->archival = TRUE;
+            $task->save();
+            return response('Sukces!');
+        } catch (\Throwable $th) {
+            return response('Error!', 500);
+        }
+    }
+
+    /**
+     * Display all archival tasks.
+     *
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function archives()
+    {
+        try {
+            $tasks = Task::where("archival", "=", "1")->orderBy('created_at', 'desc')->get();
+            return view('tasks.showArchives', ['tasks' => $tasks]);
+        } catch (\Throwable $th) {
+            return response('Error!', 500);
+        }
     }
 }
