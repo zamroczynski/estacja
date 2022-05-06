@@ -29,6 +29,21 @@ class TaskController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function my()
+    {
+        try {
+            $tasks = Task::where('user_id', '=', Auth()->user()->id)->orderBy('created_at', 'desc')->get();
+            return view('tasks.my', ['tasks' => $tasks]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['Wystąpił błąd!']);
+        }
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -105,7 +120,7 @@ class TaskController extends Controller
     {
         try {
             $task = Task::find($id);
-            return view('tasks.showAdmin', ['task' => $task]);
+            return view('tasks.show', ['task' => $task]);
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['Wystąpił błąd!']);
         }
@@ -211,6 +226,33 @@ class TaskController extends Controller
             return view('tasks.showArchives', ['tasks' => $tasks]);
         } catch (\Throwable $th) {
             return response('Error!', 500);
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $task
+     * @return \Illuminate\Http\Response
+     */
+    public function realization(Request $request, int $id)
+    {
+        try {
+            $task = Task::find($id);
+            $task->done = $request->done;
+            $task->last_id = Auth()->user()->id;
+            $task->comment = $request->comment;
+            $task->save();
+            $message = 'Zadanie "'.$task->title.'" zostało zaaktualizowane przez pracownika.';
+            $admins = User::where('role', '=', 'admin')->get();
+            Notification::send($admins, new DbNotification($message, ModuleName::TASKS));
+
+            // foreach($admins as $admin) {
+            // }
+            return redirect()->back()->with('status', 'Zadanie zostało zaktualizowane!');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['Wystąpił błąd! '.$th->getMessage()]);
         }
     }
 }

@@ -8,14 +8,13 @@
             </div>
             <div class="col">
                 <a class="btn btn-secondary btn-lg" style="float: right; margin-left: 0.25rem"
-                    href="@if ($task->archival) {{ route('adminTaskArchives') }} @else {{ route('adminTasks') }} @endif"
-                    role="button">Powrót</a>
+                    href="{{ route('tasksMy') }}" role="button">Powrót</a>
             </div>
         </div>
         <div class="row mb-3">
-            <div class="col">
-                <form id="task" action="{{ route('adminTaskStore') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
+            <form action="{{route("taskRealization", $task->id)}}" method="POST">
+                @csrf
+                <div class="col">
                     <div class="col mb-3 mt-1">
                         @if ($task->archival)
                             <h6 class="badge bg-warning">Zadanie archiwalne</h6>
@@ -28,7 +27,7 @@
                     </div>
                     <div class="col mb-4 mt-1">
                         <label for="content" class="form-label">Treść:</label>
-                        <div class="my-2" style="max-width: 80%" id="content"></div>
+                        <div class="my-2" id="content"></div>
                     </div>
                     <div class="col mb-3 mt-2">
                         <label for="user" class="form-label">Pracownik:</label>
@@ -46,46 +45,27 @@
                     </div>
                     <div class="col mb-3 mt-2">
                         <label for="done" class="form-label">Czy zadanie zostało wykonane:</label>
-                        <input type="text" id="done" class="form-control form-control-lg" name="done"
-                            value="{{ $task->done ? 'Tak' : 'Nie' }}" disabled />
+                        <select name="done" id="done" class="form-control form-control-lg">
+                            <option value="0">Nie</option>
+                            <option value="1" @if($task->done) selected @endif>Tak</option>
+                        </select>
                     </div>
                     <label for="comment" class="form-label">Komentarz:</label>
-                    <textarea name="comment" id="comment" rows="5" class="form-control" disabled>
+                    <textarea name="comment" id="comment" rows="5" class="form-control">
                         {{ $task->comment }}
                     </textarea>
-                    <div class="col mb-3 mt-2">
-                        <label for="updated" class="form-label">Ostatnia zmiana:</label>
-                        <input type="datetime" id="updated" class="form-control form-control-lg" name="updated"
-                            value="{{ $task->updated_at }}" disabled />
-                    </div>
-                    <div class="col mb-3 mt-2">
-                        <label for="admin" class="form-label">Ostania zmiana dokonana przez:</label>
-                        <input type="text" id="admin" class="form-control form-control-lg" name="admin"
-                            value="{{ $task->last->first_name }} {{ $task->last->last_name }}" disabled />
-                    </div>
-                    <div class="col mb-3 mt-2">
-                        <label for="created" class="form-label">Zadanie utworzone:</label>
-                        <input type="datetime" id="created" class="form-control form-control-lg" name="created"
-                            value="{{ $task->created_at }}" disabled />
-                    </div>
-                    <div class="col mb-3 mt-2">
-                        <label for="admin" class="form-label">Zadanie utworzone przez:</label>
-                        <input type="text" id="admin" class="form-control form-control-lg" name="admin"
-                            value="{{ $task->admin->first_name }} {{ $task->admin->last_name }}" disabled />
-                    </div>
                     <div class="col mb-3 mt-1">
                         @if ($task->archival)
                             <h6 class="badge bg-warning">Zadanie archiwalne</h6>
                         @endif
                     </div>
                     <div class="col">
-                        <a class="btn btn-secondary btn-lg" href="{{ route('adminTasks') }}" role="button">Powrót</a>
-                        <a class="btn btn-primary btn-lg" href="{{ route('adminTaskCopy', $task->id) }}"
-                            role="button">Kopiuj zadanie</a>
+                        <input type="submit" class="btn btn-success btn-lg" value="Zapisz"/>
+                        <a class="btn btn-secondary btn-lg" href="{{ route('tasksMy') }}" role="button">Powrót</a>
                     </div>
-                </form>
-            </div>
+            </form>
         </div>
+    </div>
     </div>
 @endsection
 @section('js')
