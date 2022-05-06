@@ -247,9 +247,6 @@ class TaskController extends Controller
             $message = 'Zadanie "'.$task->title.'" zostało zaaktualizowane przez pracownika.';
             $admins = User::where('role', '=', 'admin')->get();
             Notification::send($admins, new DbNotification($message, ModuleName::TASKS));
-
-            // foreach($admins as $admin) {
-            // }
             return redirect()->back()->with('status', 'Zadanie zostało zaktualizowane!');
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['Wystąpił błąd! '.$th->getMessage()]);
