@@ -8,6 +8,7 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\GuideController;
 use App\Http\Controllers\PlanogramController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
@@ -42,7 +43,9 @@ Route::group(['middleware' => 'auth'], function () {
 
         //terminy user
         Route::prefix('expiry-date-system')->group(function () {
-            Route::get('/', function () {return view('eds.index');})->name('edsPanel');
+            Route::get('/', function () {
+                return view('eds.index');
+            })->name('edsPanel');
             Route::get('/list', [ExpiryDatesController::class, 'index'])->name('edsList');
             Route::get('/add', [ExpiryDatesController::class, 'create'])->name('edsAdd');
             Route::post('/add-date', [ExpiryDatesController::class, 'store'])->name('edsAddDate');
@@ -51,9 +54,10 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/show/{id}', [ExpiryDatesController::class, 'show'])->name('edsShow');
             Route::post('/update/{id}', [ExpiryDatesController::class, 'update'])->name('edsUpdate');
             Route::get('/destroy/{id}', [ExpiryDatesController::class, 'destroy'])->name('edsDestroy');
-            Route::get('/report', function () {return view('eds.report');})->name('edsReport');
+            Route::get('/report', function () {
+                return view('eds.report');
+            })->name('edsReport');
             Route::post('/report/generate', [ExpiryDatesController::class, 'report'])->name('edsGenerate');
-
         });
 
         //Podręcznik user
@@ -72,10 +76,18 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/download/{id}', [PlanogramController::class, 'download'])->name('planogramDownload');
         });
 
+        //Zadania user
+        Route::group(['prefix' => 'tasks'], function () {
+            Route::get('/my', [TaskController::class, 'my'])->name('tasksMy');
+            Route::get('/show/{id}', [TaskController::class, 'show'])->name('taskShow');
+            Route::post('/realization/{id}', [TaskController::class, 'realization'])->name('taskRealization');
+        });
 
         //Grafik user
         Route::prefix('schedule')->group(function () {
-            Route::get('/', function () {return view('schedule.user');})->name('userSchedule');
+            Route::get('/', function () {
+                return view('schedule.user');
+            })->name('userSchedule');
             Route::get('/preferences', [PreferenceController::class, 'index'])->name('userPreferences');
             Route::get('/preferences/destroy/{id}', [PreferenceController::class, 'destroy'])->name('preferenceDestroy');
             Route::post('/preferences/add', [PreferenceController::class, 'store'])->name('preferenceAdd');
@@ -91,7 +103,10 @@ Route::group(['middleware' => 'auth'], function () {
             'prefix' => 'admin',
             'middleware' => 'can:isAdmin'
         ], function () {
-            Route::get('/', function () {return view('admin.admin');})->name('adminPanel');
+            Route::get('/', function () {
+                return view('admin.admin');
+            })->name('adminPanel');
+            Route::post('/upload', [GuideController::class, 'uploadTrix'])->name('adminUploadTrix');
 
             Route::group(['prefix' => 'users'], function () {
                 Route::get('/', [UserController::class, 'index'])->name('adminUsers');
@@ -101,7 +116,15 @@ Route::group(['middleware' => 'auth'], function () {
             });
 
             Route::group(['prefix' => 'tasks'], function () {
-                Route::get('/', [UserController::class, 'index'])->name('adminTasks');
+                Route::get('/', [TaskController::class, 'index'])->name('adminTasks');
+                Route::get('/show/{task}', [TaskController::class, 'show'])->name('adminTaskShow');
+                Route::get('/create', [TaskController::class, 'create'])->name('adminTaskCreate');
+                Route::post('/store', [TaskController::class, 'store'])->name('adminTaskStore');
+                Route::get('/edit/{task}', [TaskController::class, 'edit'])->name('adminTaskEdit');
+                Route::post('/update/{task}', [TaskController::class, 'update'])->name('adminTaskUpdate');
+                Route::get('/copy/{task}', [TaskController::class, 'copy'])->name('adminTaskCopy');
+                Route::get('/archive/{task}', [TaskController::class, 'archive'])->name('adminTaskArchive');
+                Route::get('/archives', [TaskController::class, 'archives'])->name('adminTaskArchives');
             });
 
             Route::group(['prefix' => 'messages'], function () {
@@ -119,11 +142,12 @@ Route::group(['middleware' => 'auth'], function () {
             });
 
             Route::group(['prefix' => 'guide'], function () {
-                Route::get('/', function () {return view('guide.admin');})->name('adminGuide');
+                Route::get('/', function () {
+                    return view('guide.admin');
+                })->name('adminGuide');
                 Route::get('/list', [GuideController::class, 'index'])->name('adminGuideList');
                 Route::get('/create', [GuideController::class, 'create'])->name('adminGuideCreate');
                 Route::post('/store', [GuideController::class, 'store'])->name('adminGuideStore');
-                Route::post('/upload', [GuideController::class, 'upload'])->name('adminGuideUpload');
                 Route::get('/edit/{id}', [GuideController::class, 'edit'])->name('adminGuideEdit');
                 Route::post('/public', [GuideController::class, 'public'])->name('adminGuidePublic');
                 Route::post('/unpublic', [GuideController::class, 'unpublic'])->name('adminGuideUnPublic');
@@ -131,7 +155,9 @@ Route::group(['middleware' => 'auth'], function () {
             });
 
             Route::group(['prefix' => 'schedule'], function () {
-                Route::get('/', function () {return view('schedule.admin');})->name('adminSchedule');
+                Route::get('/', function () {
+                    return view('schedule.admin');
+                })->name('adminSchedule');
                 Route::get('/preferences', [PreferenceController::class, 'indexAdmin'])->name('adminPreferences');
                 Route::get('/create', [ScheduleController::class, 'create'])->name('scheduleCreate');
                 Route::post('/create', [ScheduleController::class, 'save'])->name('scheduleSave');

@@ -52,20 +52,6 @@ class GuideController extends Controller
         return redirect()->route('adminGuideList')->with('status', 'Instrukcja została zapisana!');
     }
 
-    public function upload(Request $request)
-    {
-        if ($request->hasFile('file')) {
-            $filenamewithextension = $request->file('file')->getClientOriginalName();
-            $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
-            $extension = $request->file('file')->getClientOriginalExtension();
-            $filenametostore = $filename . '_' . time() . '.' . $extension;
-            $request->file('file')->storeAs('public/uploads', $filenametostore);
-            $path = asset('storage/uploads/' . $filenametostore);
-            echo $path;
-            exit;
-        }
-    }
-
     /**
      * Display the specified resource.
      *
@@ -133,7 +119,6 @@ class GuideController extends Controller
 
     public function public(Request $request)
     {
-        //dd($request);
         $this->changeStatus($request->id, TRUE);
         Notification::send(User::all(), new DbNotification('Nowa instrukcja została opublikowana! Sprawdź ją w podręczniku stacji!', ModuleName::GUIDE));
         return redirect()->route('adminGuideList')->with('status', 'Instrukcja została opublikowana!');

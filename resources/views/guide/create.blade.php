@@ -37,7 +37,7 @@
 @endsection
 @section('js')
 <script type="text/javascript">
-    var HOST = "{{ route('adminGuideUpload') }}";
+    var HOST = "{{ route('adminUploadTrix') }}";
 
     addEventListener("trix-attachment-add", function(event) {
         if (event.attachment.file) {
