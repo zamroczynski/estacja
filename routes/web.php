@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ExpiryDatesController;
 use App\Http\Controllers\HomeController;
@@ -76,6 +77,12 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/download/{id}', [PlanogramController::class, 'download'])->name('planogramDownload');
         });
 
+        //Ad user
+        Route::group(['prefix' => 'ad'], function () {
+            Route::get('/', [AdvertisementController::class, 'index'])->name('userAd');
+            Route::get('/show/{id}', [AdvertisementController::class, 'show'])->name('userAdShow');
+        });
+
         //Zadania user
         Route::group(['prefix' => 'tasks'], function () {
             Route::get('/my', [TaskController::class, 'my'])->name('tasksMy');
@@ -127,8 +134,12 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/archives', [TaskController::class, 'archives'])->name('adminTaskArchives');
             });
 
-            Route::group(['prefix' => 'messages'], function () {
-                Route::get('/', [UserController::class, 'index'])->name('adminMessages');
+            Route::group(['prefix' => 'ad'], function () {
+                Route::get('/', [AdvertisementController::class, 'index'])->name('adminAd');
+                Route::get('/edit/{id}', [AdvertisementController::class, 'edit'])->name('adminAdEdit');
+                Route::get('/show/{id}', [AdvertisementController::class, 'show'])->name('adminAdShow');
+                Route::post('/update/{id}', [AdvertisementController::class, 'update'])->name('adminAdUpdate');
+                Route::get('/destroy/{id}', [AdvertisementController::class, 'destroy'])->name('adminAdDestroy');
             });
 
             Route::group(['prefix' => 'planograms'], function () {

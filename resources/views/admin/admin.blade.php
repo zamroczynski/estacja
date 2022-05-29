@@ -40,7 +40,7 @@
         <div class="col">
             <div class="card mt-5" >
                 <div class="card-body">
-                    <a href="#" class="link-secondary">
+                    <a href="{{ route('adminAd') }}" class="link-secondary">
                         <h5 class="card-title text-center"><i class="fas fa-newspaper fa-7x"></i></h5>
                         <p class="card-text text-center fs-4">Wiadomości</p>
                     </a>
