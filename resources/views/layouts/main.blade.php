@@ -63,7 +63,7 @@
                             <a href="{{ route('planograms') }}" class="nav-link py-3 px-0 px-lg-3 rounded">Planogramy</a>
                         </li>
                         <li class="nav-item mx-0 mx-lg-1">
-                            <a href="#" class="nav-link py-3 px-0 px-lg-3 rounded">Wiadomości</a>
+                            <a href="{{ route('userAd') }}" class="nav-link py-3 px-0 px-lg-3 rounded">Wiadomości</a>
                         </li>
                         <li class="nav-item mx-0 mx-lg-1">
                             <a href="{{ route('tasksMy') }}" class="nav-link py-3 px-0 px-lg-3 rounded">Zadania</a>

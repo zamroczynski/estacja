@@ -79,8 +79,10 @@ Route::group(['middleware' => 'auth'], function () {
 
         //Ad user
         Route::group(['prefix' => 'ad'], function () {
-            Route::get('/', [AdvertisementController::class, 'index'])->name('userAd');
+            Route::get('/', [AdvertisementController::class, 'indexUser'])->name('userAd');
             Route::get('/show/{id}', [AdvertisementController::class, 'show'])->name('userAdShow');
+            Route::get('/create', [AdvertisementController::class, 'create'])->name('adCreate');
+            Route::post('/store', [AdvertisementController::class, 'store'])->name('adStore');
         });
 
         //Zadania user
@@ -104,6 +106,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/archives/{id}', [ScheduleController::class, 'show'])->name('scheduleShow');
         });
 
+        Route::post('/upload', [FileController::class, 'uploadTrix'])->name('uploadTrix');
 
         //admin dashboard
         Route::group([
@@ -113,7 +116,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/', function () {
                 return view('admin.admin');
             })->name('adminPanel');
-            Route::post('/upload', [GuideController::class, 'uploadTrix'])->name('adminUploadTrix');
+
 
             Route::group(['prefix' => 'users'], function () {
                 Route::get('/', [UserController::class, 'index'])->name('adminUsers');
@@ -135,7 +138,7 @@ Route::group(['middleware' => 'auth'], function () {
             });
 
             Route::group(['prefix' => 'ad'], function () {
-                Route::get('/', [AdvertisementController::class, 'index'])->name('adminAd');
+                Route::get('/', [AdvertisementController::class, 'indexAdmin'])->name('adminAd');
                 Route::get('/edit/{id}', [AdvertisementController::class, 'edit'])->name('adminAdEdit');
                 Route::get('/show/{id}', [AdvertisementController::class, 'show'])->name('adminAdShow');
                 Route::post('/update/{id}', [AdvertisementController::class, 'update'])->name('adminAdUpdate');

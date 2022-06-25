@@ -12,16 +12,24 @@
 <div class="container">
     @include('layouts.alerts')
     <div class="row mt-5 position-relative">
-        <div class="col"><h1 class="position-absolute top-0 start-50 translate-middle">Nowa Instrukcja</h1></div>
+        <div class="col"><h1 class="position-absolute top-0 start-50 translate-middle">Nowa Wiadomość</h1></div>
         <div class="col">
             <a class="btn btn-secondary btn-lg" style="float: right; margin-left: 0.25rem" href="{{ url()->previous() }}" role="button">Powrót</a>
         </div>
     </div>
     <div class="row mt-3">
         <div class="col">
-            <form action="{{ route('adminGuideStore') }}" method="POST">
+            <form action="{{ route('adStore') }}" method="POST">
                 @csrf
-                <input type="text" name="name" placeholder="Tytuł...." class="form-control mb-1" required>
+                <input type="text" name="title" placeholder="Tytuł...." class="form-control mb-1" required>
+                <div>
+                    <label for="start">Ważna od:</label>
+                    <input type="date" name="start" id="start" value="{{ date('Y-m-d') }}" class="form-control mb-1" required>
+                </div>
+                <div class="mb-4">
+                    <label for="end">Ważna do:</label>
+                    <input type="date" name="end" id="end" value="{{ date('Y-m-d') }}" class="form-control mb-1" required>
+                </div>
                 <input type="hidden" id="post_body" value="" placeholder="..." name="content">
                 <trix-editor
                     input="post_body"

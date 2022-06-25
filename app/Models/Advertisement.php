@@ -24,4 +24,16 @@ class Advertisement extends Model
         return $this->belongsTo(User::class);
     }
 
+    public static function getUserAd()
+    {
+        return Advertisement::where("public", "=", TRUE)
+        ->orderBy('priority', 'desc')
+        ->orderBy('created_at', 'desc')
+        ->get();
+    }
+
+    public static function getAdminAd()
+    {
+        return Advertisement::orderBy('created_at', 'desc')->paginate(15);
+    }
 }

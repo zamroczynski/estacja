@@ -58,6 +58,16 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{ $advertisements->links() }}
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <div class="d-grid gap-2">
+                    <a class="btn btn-success btn-lg" href="{{ route('adCreate') }}" role="button">
+                        Dodaj nową wiadomość
+                    </a>
+                </div>
             </div>
         </div>
     </div>

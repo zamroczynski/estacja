@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('guides', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('text')->nullable();
+            $table->text('text')->nullable();
             $table->boolean('is_public')->default(FALSE);
             $table->timestamps();
         });

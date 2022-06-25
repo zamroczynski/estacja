@@ -4,18 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Models\Advertisement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdvertisementController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the public resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function indexUser()
     {
-        $advertisements = Advertisement::orderBy('created_at', 'desc')->get();
-        return view('advertisements.admin', ['advertisements' => $advertisements]);
+        return view('advertisements.user', ['advertisements' => Advertisement::getUserAd()]);
+    }
+
+    /**
+     * Display a listing of the all resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexAdmin()
+    {
+        return view('advertisements.admin', ['advertisements' => Advertisement::getAdminAd()]);
     }
 
     /**
@@ -25,7 +35,7 @@ class AdvertisementController extends Controller
      */
     public function create()
     {
-        //
+        return view('advertisements.create');
     }
 
     /**
@@ -45,9 +55,9 @@ class AdvertisementController extends Controller
      * @param  \App\Models\int  $advertisement
      * @return \Illuminate\Http\Response
      */
-    public function show(int $advertisement)
+    public function show(int $id)
     {
-        //
+        return view('advertisements.showUser', ['ad' => Advertisement::find($id)]);
     }
 
     /**
